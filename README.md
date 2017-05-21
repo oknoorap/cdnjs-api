@@ -1,2 +1,2 @@
-# cdnjs-api
-:globe_with_meridians: Unofficial nodejs library for cdnjs.com API
+# :globe_with_meridians: Unofficial NodeJS Library for CDNJS.com API
+Search cdnjs libraries just a snap - More Information about API https://cdnjs.com/api
