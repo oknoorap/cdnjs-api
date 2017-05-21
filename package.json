@@ -1,0 +1,38 @@
+{
+  "name": "cdnjs-api",
+  "version": "1.0.0",
+  "description": "Unofficial API Wrapper for cdnjs.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "xo && ava --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oknoorap/cdnjs-api.git"
+  },
+  "keywords": [
+    "cdnjs",
+    "api",
+    "api-wrapper"
+  ],
+  "author": "oknoorap",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oknoorap/cdnjs-api/issues"
+  },
+  "homepage": "https://github.com/oknoorap/cdnjs-api#readme",
+  "dependencies": {
+    "axios": "^0.16.1",
+    "find-versions": "^2.0.0",
+    "lodash.merge": "^4.6.0"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "xo": "^0.18.2"
+  },
+  "xo": {
+    "esnext": true,
+    "space": true,
+    "semicolon": false
+  }
+}
