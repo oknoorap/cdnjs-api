@@ -131,7 +131,18 @@ const files = (name, options = {}) => {
   })
 }
 
+const getUrl = (libname, filename) => {
+  const {name, version} = getVersion(libname)
+
+  if (!libname || !name || !version || !filename) {
+    throw new Error('Library name, version, or filename undefined.')
+  }
+
+  return `${fileUrl}/${name}/${version}/${filename}`
+}
+
 module.exports.search = search
 module.exports.lib = lib
 module.exports.versions = versions
 module.exports.files = files
+module.exports.url = getUrl
