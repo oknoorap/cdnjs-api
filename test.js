@@ -56,7 +56,7 @@ test('files list of `jquery` library is valid', async t => {
 })
 
 const jqueryFilesVersion = cdnjs.files('jquery@1.12.0')
-test('files list of `jquery` library with version `1.12.0` is valid', async t => {
+test('files list of `jquery` version `1.12.0` is valid', async t => {
   await jqueryFilesVersion.then(files => {
     t.true(Array.isArray(files))
     t.true(files.length > 0)
@@ -64,3 +64,6 @@ test('files list of `jquery` library with version `1.12.0` is valid', async t =>
   })
 })
 
+test('get `jquery` version `3.2.1` url', t => {
+  t.is(cdnjs.url('jquery@3.2.1', 'jquery.min.js'), 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+})

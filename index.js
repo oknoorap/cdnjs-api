@@ -3,6 +3,7 @@ const merge = require('lodash.merge')
 const findVersions = require('find-versions')
 
 const apiUrl = 'https://api.cdnjs.com/libraries'
+const fileUrl = 'https://cdnjs.cloudflare.com/ajax/libs'
 
 const defaultOptions = {
   fields: {
@@ -95,22 +96,28 @@ const versions = (name, options = {}) => {
   })
 }
 
-const files = (name, options = {}) => {
-  const availableVersions = findVersions(name)
-  let customVersion
-  if (/(.*)@/.test(name) && availableVersions.length > 0) {
-    customVersion = availableVersions[0]
+const getVersion = name => {
+  const foundVersions = findVersions(name)
+  let version
+
+  if (/(.*)@/.test(name) && foundVersions.length > 0) {
+    version = foundVersions[0]
     name = name.replace(/(.[^@]*)@(.*)/, '$1')
   }
 
+  return {name, version}
+}
+
+const files = (name, options = {}) => {
+  const availableVersion = getVersion(name)
   return new Promise((resolve, reject) => {
-    lib(name, options).then(result => {
+    lib(availableVersion.name, options).then(result => {
       let _files = []
       if ('assets' in result && Array.isArray(result.assets) && result.assets.length > 0) {
         const {assets} = result
         let {version} = result
-        if (customVersion) {
-          version = customVersion
+        if (availableVersion.version) {
+          version = availableVersion.version
         }
 
         const filteredFiles = assets.filter(item => item.version === version)
@@ -124,7 +131,18 @@ const files = (name, options = {}) => {
   })
 }
 
+const getUrl = (libname, filename) => {
+  const {name, version} = getVersion(libname)
+
+  if (!libname || !name || !version || !filename) {
+    throw new Error('Library name, version, or filename undefined.')
+  }
+
+  return `${fileUrl}/${name}/${version}/${filename}`
+}
+
 module.exports.search = search
 module.exports.lib = lib
 module.exports.versions = versions
 module.exports.files = files
+module.exports.url = getUrl
