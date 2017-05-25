@@ -3,6 +3,7 @@ const merge = require('lodash.merge')
 const findVersions = require('find-versions')
 
 const apiUrl = 'https://api.cdnjs.com/libraries'
+const fileUrl = 'https://cdnjs.cloudflare.com/ajax/libs'
 
 const defaultOptions = {
   fields: {
