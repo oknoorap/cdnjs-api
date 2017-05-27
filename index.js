@@ -108,11 +108,25 @@ const getVersion = name => {
   return {name, version}
 }
 
-const files = (name, options = {}) => {
+const getUrl = (libname, filename) => {
+  const {name, version} = getVersion(libname)
+
+  if (!libname || !name || !version || !filename) {
+    throw new Error('Library name, version, or filename undefined.')
+  }
+
+  if (Array.isArray(filename)) {
+    return filename.map(item => `${fileUrl}/${name}/${version}/${item}`)
+  }
+
+  return `${fileUrl}/${name}/${version}/${filename}`
+}
+
+const files = (name, options = {}, fullUrl = false) => {
   const availableVersion = getVersion(name)
   return new Promise((resolve, reject) => {
     lib(availableVersion.name, options).then(result => {
-      let _files = []
+      let fileList = []
       if ('assets' in result && Array.isArray(result.assets) && result.assets.length > 0) {
         const {assets} = result
         let {version} = result
@@ -121,28 +135,22 @@ const files = (name, options = {}) => {
         }
 
         const filteredFiles = assets.filter(item => item.version === version)
-        _files = filteredFiles[0].files
+        fileList = filteredFiles[0].files
       }
 
-      resolve(_files)
+      if (fullUrl) {
+        fileList = getUrl(name, fileList)
+      }
+
+      resolve(fileList)
     }).catch(err => {
       reject(err)
     })
   })
 }
 
-const getUrl = (libname, filename) => {
-  const {name, version} = getVersion(libname)
-
-  if (!libname || !name || !version || !filename) {
-    throw new Error('Library name, version, or filename undefined.')
-  }
-
-  return `${fileUrl}/${name}/${version}/${filename}`
-}
-
 module.exports.search = search
 module.exports.lib = lib
 module.exports.versions = versions
-module.exports.files = files
 module.exports.url = getUrl
+module.exports.files = files

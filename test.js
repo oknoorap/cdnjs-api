@@ -64,6 +64,20 @@ test('files list of `jquery` version `1.12.0` is valid', async t => {
   })
 })
 
-test('get `jquery` version `3.2.1` url', t => {
-  t.is(cdnjs.url('jquery@3.2.1', 'jquery.min.js'), 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+const jquery3 = cdnjs.files('jquery@3.2.1', {}, true)
+test('get `jquery` version `3.2.1` url', async t => {
+  const expected = [
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/core.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.map',
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.map'
+  ]
+
+  await jquery3.then(actual => {
+    t.is(cdnjs.url('jquery@3.2.1', 'jquery.min.js'), 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+    t.deepEqual(actual, expected)
+  })
 })
